@@ -1,0 +1,451 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GrowthSpring | ADMIN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <style>
+      /* Hide arrows from input type number */
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+   -moz-appearance: textfield;
+    }
+
+    td, th{
+      white-space: nowrap;
+    }
+    .test{
+      min-width: 120px;
+    }
+    .table-form td{
+      height: 70px;
+    }
+    .btn-form{
+      height: 70%;
+    }
+    
+  </style>
+</head>
+<body onload="reloadpage()">
+  <!--New Investment Modal-->
+  <div class="modal fade" id="modal-new-investment" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>New Investment</h5>
+        </div>
+        <div class="modal-body">
+          <form id="new-investment">
+            <label for="bussiness-name-new" class="form-label">Bussiness Name</label>
+            <input type="text" class="form-control mb-2" id="business" name="businessName">
+            <label for="description" class="form-label">About the Business</label>
+            <textarea type="text" class="form-control mb-2" id="description" name="description">
+            </textarea>
+            <label for="amount-new" class="form-label">Amount per person</label>
+            <input type="text" class="form-control mb-2" name="requiredAmount" id="required-amount">
+            <label for="days-left" class="form-label">Remaining Days</label>
+            <input type="number" class="form-control mb-2" name="remainingDays" id="days">
+            <label for="people-new" class="form-label">Interested People</label>
+            <input type="number" class="form-control mb-2" name="interestedPeople" id="Interested">
+          </input>
+            <div class="d-flex mt-3">
+              <button class="btn btn-primary ms-auto" id="investment-btn">Add Investment</button>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary px-3" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--NAVBAR-NAVIGATION-->
+  <nav class="navbar navbar-expand bg-light">
+    <div class="container-md align-items-center">
+      <a class="navbar-brand me-auto" href="#">ADMIN</a>
+      <a  href="/home"  class="btn btn-primary me-auto">Home</a>
+      <a  href="/auth/logout"  class="btn btn-primary">Log Out</a>
+    </div>
+  </nav>
+
+  <!--MAIN CONTENT-->
+  <!--DEPOSITS-->
+
+  <div class="container-fluid px-md-5 mt-3">
+    <div class="row">
+      <h4 class="display-6">Approvals</h4>
+      <h5 class="lead">Deposits</h5>
+      <div class="table-responsive">
+        <table class="table table-striped table-form">       
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Trans ID</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider align-middle" id="deposit-list">
+        </tbody>
+        </table> 
+
+<!--WITHDRAWALS-->        
+      </div>
+      <h5 class="lead mt-2">Withdrawals</h5>
+      <div class="table-responsive">
+        <table class="table table-striped table-form">
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Name</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Trans ID</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider align-middle" id="withdrawals-list">
+        </tbody>
+        </table> 
+      </div>
+      <div class="d-flex mt-4 align-items-center">
+        <h4 class="display-6 me-auto btn-sm">Investments</h4>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal-new-investment">Add New Investment</button>
+      </div>
+
+<!--PENDING-->      
+      <h5 class="lead">Pending</h5>
+      <div class="table-responsive">
+        <table class="table table-striped table-form">
+        
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Bussiness</th>
+            <th scope="col">Collected</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider align-middle" id="new-investment-list">
+         
+        </tbody>
+        </table> 
+      </div>
+
+<!--CURRENT INVESTMENTS-->      
+      <h5 class="lead">Running</h5>
+      <div class="table-responsive">
+        <table class="table table-striped table-form">
+        
+        <thead>
+          <tr>
+            <th scope="col">S/N</th>
+            <th scope="col">Bussiness</th>
+            <th scope="col">Invested</th>
+            <th scope="col">Declare Returns</th>
+            <th scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider align-middle" id="current-investments">
+        </tbody>
+        </table> 
+      </div>
+    </div>
+  </div>
+  
+
+  <!--FOOTER-->
+  <footer  class="bg-light mt-4">
+    <div style="height:5rem" class="container d-flex align-items-center justify-content-center">
+      <small class="fw-bold h6">&copy GrowthSpring 2022</small>
+    </div>
+  </footer>
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  <script>
+//LOAD PAGE DATA    
+   var deposits = []; 
+   var withdrawals = [];
+   var pending = [];
+   var current = [];      
+   setInterval(reloadpage, 1000);
+   function reloadpage(){
+//deposit data      
+        fetch('/depositListG', {
+                   method: 'get',
+                 }).then(res => res.json())
+                  .then(function(data) {
+                   var z = 0;
+                   var y = 1;
+                   for (let x in data.list){
+                       const tID = data.list[z].transID;
+                       if(deposits.includes(tID) == false){
+                   document.getElementById('deposit-list').innerHTML += "<tr><th scope=\"col\">"+ y +"</th><td scope=\"col\">" + data.list[z].name + "</td><td scope=\"col\">" +data.list[z].method + "</td><td scope=\"col\">" + data.list[z].transID + "</td><td scope=\"col\" class=\"test\"><input type=\"number\" class=\"form-control\" onchange = \"getValue(this.value)\"></td><td scope=\"col\" class=\"d-flex align-items-center\"><button id=\"" + tID + "\" type= \"button\" class = \"btn btn-primary me-3\" onclick = \"test(this.id, "+ z +")\">Approve</button><button class=\"btn btn-primary\" type= \"button\" id = \"" + tID + "\" onclick = \"reject(this.id, "+ z +")\">Reject</button></td></tr>"
+                   deposits.push(tID);
+               }
+               z++;
+               y++;
+           }
+      });
+                  
+//withdrawals list
+fetch('/withdrawalsListG', {
+                   method: 'get',
+                 }).then(res => res.json())
+                  .then(function(data) {
+                   var z = 0;
+                   var y = 1;
+                   for (let x in data.list){
+                       const tID = data.list[z]._id;
+                       if(withdrawals.includes(tID) == false){
+                   document.getElementById('withdrawals-list').innerHTML += "<tr><th scope=\"col\">"+ y +"</th><td scope=\"col\">" + data.list[z].name + "</td><td scope=\"col\">" +data.list[z].method + "</td><td scope=\"col\">" + data.list[z].amount + "</td><td scope=\"col\" class=\"test\"><input type=\"text\" class=\"form-control\" onchange = \"getID(this.value)\"></td><td scope=\"col\" class=\"d-flex align-items-center\"><button id=\"" + tID + "\" type= \"button\" class = \"btn btn-primary me-3\" onclick = \"proceedWithrawal(this.id, "+ z +")\">Approve</button><button id = \"" + tID + "\" class=\" btn btn-primary\" type= \"button\" onclick = \"removeWithdrawal(this.id, "+ z +")\">Reject</button></td></tr>"
+                   withdrawals.push(tID);
+               }
+               z++;
+               y++;
+           }
+                  });
+
+//pending list
+fetch('/pending-investmentsList', {
+                   method: 'get',
+                 }).then(res => res.json())
+                  .then(function(data) {
+                   var z = 0;
+                   var y = 0;
+                   var a = 1;
+                   for (let x in data.list){
+                       const tID = data.list[z]._id;
+                       const status = data.list[z].status;
+                       const name = data.list[z].businessName;
+                       if(pending.includes(tID) == false && status !="rejected" && status !="On-going" && status !="done" && status !="contributions-done"){
+                   document.getElementById('new-investment-list').innerHTML += "<tr><th scope=\"col\">"+ a +"</th><td scope=\"col\">" + name + "</td><td scope=\"col\">" + data.list[z].amountCollected + "</td><td scope=\"col\" class=\"d-flex align-items-center\"><button id=\"" + name + "\" type= \"button\" class = \"btn btn-primary me-3\" onclick = \"finaliseInvestment("+ y +",  this.id )\">Finalise</button><button class=\"btn btn-primary\" id=\"" + name + "\" type= \"button\" onclick = \"rejectInvestment(" + y +", this.id)\">Remove</button></td></tr>"           
+                   pending.push(tID);
+                   y++;
+                   a++;
+               }
+               z++;              
+           }
+                  });
+                  
+//current investments list
+fetch('/current-investmentsList', {
+                   method: 'get',
+                 }).then(res => res.json())
+                  .then(function(data) {
+                   var z = 0;
+                   var y = 0;
+                   var a = 1;
+                   for (let x in data.list){
+                       const tID = data.list[z]._id;
+                       const status = data.list[z].status;
+                       if(current.includes(tID) == false && status !="rejected" && status !="contributions" && status !="done" && status !="contributions-done"){
+                   document.getElementById('current-investments').innerHTML += "<tr><th scope=\"col\">"+ a +"</th><td scope=\"col\">" + data.list[z].businessName + "</td><td scope=\"col\">" + data.list[z].amountCollected + "</td><td scope=\"col\" class = \"d-flex align-items-center\"><input id = \"" + data.list[z].businessName + "\" type=\"number\" class=\"form-control test me-2\" onchange = \"getReturnedValue(this.value, this.id)\"><button class=\"btn btn-primary\" type= \"button\" id = \""+ data.list[z].amountCollected +"\" onclick = \"submitReturns(this.id)\">Submit</button></td><td scope=\"col\"><button class=\"btn btn-primary\" type= \"button\" id=\"" + data.list[z].businessName + "\" onclick = \"endInvestment(this.id, "+ y +")\">End Project</button></td></tr>"           
+                   current.push(tID);
+                   y++;
+                   a++;
+               }
+               z++;
+           }
+      });
+                
+} 
+
+
+//DEPOSIT ACTIONS
+//Accept Deposit
+var amount = 0;
+function getValue(value) {
+   amount = value;
+   }
+function test(id, z){      
+   const doneData = {
+       "transID": id,
+       "amount": amount
+   }
+   const list = document.getElementById('deposit-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (doneData);        
+   fetch('/approve-depositG', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}            
+
+//reject deposit
+function reject(className, z){    
+   const rejectData = {
+       "transID": className,
+   };
+   const list = document.getElementById('deposit-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (rejectData);        
+   fetch('/reject-depositG', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}
+
+
+//WITHDRAWALS ACTIONS //where do you send the admin id?
+//Accept Withdrawal
+var transID = 0;
+function getID(value) {
+   transID = value;
+   }
+function proceedWithrawal(id, z){      
+   const doneData = {
+       "transID": transID,
+       "id": id
+   };
+   const list = document.getElementById('withdrawals-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (doneData);        
+   fetch('/approve-withdrawalG', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}            
+
+//remove withdrawals INCOMPLETE COZ THEY COME BACK
+function removeWithdrawal(className, z){    
+   const rejectData = {
+       "id": className,
+   };
+   const list = document.getElementById('withdrawals-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (rejectData);        
+   fetch('/reject-withdrawalG', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}
+
+//INVESTMENTs
+//add new investment
+var newInvest = document.getElementById("investment-btn");
+newInvest.addEventListener('click', newInvestment);
+   function newInvestment(){                
+       const investment = document.getElementById("new-investment");
+       const investmentData = new FormData (investment);
+       const payload = new URLSearchParams (investmentData);        
+       fetch('/new-investment', {
+                 method: 'post',
+                 body: payload
+               }).then(res => res.json())
+                .then(function(data) {
+                 });
+   }
+//reject investment
+function rejectInvestment(z, name){  
+   const rejectData = {
+       "name": name
+   };
+   const list = document.getElementById('new-investment-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (rejectData);        
+   fetch('/reject-investment', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}
+
+//finalise investment/end contributions
+function finaliseInvestment(z, name){
+   const doneData = {
+       "name": name
+   }
+   const list = document.getElementById('new-investment-list');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (doneData);        
+   fetch('/finalise-investment', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });     
+}
+
+//get returns
+var returns = 0;
+var bName = "";
+function getReturnedValue(value, name) {
+   returns = value;
+   bName = name;
+   }
+
+//submit returns
+function submitReturns(collected){      
+   const doneData = {
+       "name": bName,
+       "amount": returns,
+       "collected": collected
+   };  
+   const payload = new URLSearchParams (doneData);        
+   fetch('/submit-returns', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}            
+
+
+
+//end project
+function endInvestment(name, z){      
+   const doneData = {
+       "name": name
+   };
+   const list = document.getElementById('current-investments');
+               if(list.hasChildNodes()){
+                   list.children[z].innerHTML = "";
+               }  
+   const payload = new URLSearchParams (doneData);        
+   fetch('/end-project', {
+             method: 'post',
+             body: payload,
+           }).then(res => res.json())
+            .then(function(data) {              
+             });   
+}            
+
+
+
+</script>
+</body>
+</html>
+

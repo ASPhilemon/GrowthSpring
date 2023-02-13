@@ -1,0 +1,854 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="rgb(243, 236, 198)">
+  <title>Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+  <style>
+    footer{
+      color: 1a1a9f;
+      font-size: 0.9rem;
+    }
+    /* Colors */
+    /* navbar */
+    .navbar{
+      /* background-color: #f3b808; */
+    }
+   
+    .card-header{
+      color:rgb(107, 92, 7);
+    }
+    .card-subtitle{
+      color : black;
+      font-weight: 500;
+    }
+    .card-text{
+      letter-spacing: 1px;
+    }
+    /* primary buttons */
+    .btn-primary{
+      /* background-color: rgb(26, 26, 159, 0.5); */
+    }
+    body{
+      background-color: rgb(243, 236, 198);
+    }
+
+
+    .custom{
+        font-size: 83%;
+      }
+      .error{
+        color: rgb(199, 7, 7);
+      }
+    /* Hide arrows from input type number */
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+    }
+    /* Firefox */
+    input[type=number] {
+   -moz-appearance: textfield;
+    }
+  
+    .display-6{
+      font-size: 1.25rem;
+    }
+    .card-actions .btn{
+      font-size: 0.87rem;
+    }
+    .card-body{
+      min-height: 200px;
+    }
+    .dropdown-toggle{
+      cursor:pointer;
+    }
+    .offcanvas{
+          width:250px !important;
+    }
+    .navbar-brand, .navbar-toggler{
+        font-size:1.1rem !important;
+      }
+    .navbar-toggler{
+      font-size:27px !important;
+      padding: 0;
+    }
+    .navbar-toggler, .navbar-toggler:focus, .navbar-toggler:active{
+        border:0;
+        box-shadow: none;
+      }
+    td,th{
+        white-space: nowrap;
+    }
+    
+  </style>
+</head>
+<body onload="loadpage()">
+  <!--ALL MODALS-->
+  <!--Upload photo modal-->
+  <div class="modal fade" id="modal-upload-photo">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Profile photo</h5>
+        </div>
+        <div class="modal-body">
+          <form action="/profile-photo" id="upload-photo-form"  enctype="multipart/form-data">
+            <label for="profile-photo" class="form-label mb-3 lead">Choose Photo</label>
+            <input type="file" class="form-control mb-4" name="profilePhoto" id="profile-photo">
+            <div class="reqPhotoStatus"></div>
+            <button class="btn btn-primary">Upload</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary closeModal" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Change password modal-->
+  <div class="modal fade" id="modal-change-password">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Change password</h5>
+        </div>
+        <div class="modal-body">
+          <form action="/change-password" id="change-password-form">
+            <label for="current-password" class="form-label">Current password</label>
+            <input type="password" class="form-control mb-2" id="current-password" name="currentPassword">
+            <div class="error current-password"></div>
+            <label for="new-password" class="form-label">New password</label>
+            <input type="password" class="form-control mb-2" id="new-password" name="newPassword">
+            <label for="comfirm-password" class="form-label">Confirm password</label>
+            <input type="password" class="form-control mb-2" id="comfirm-password" name="comfirmPassword">
+            <div class="error new-password"></div>
+            <div class="status mb-3 mt-3"></div>
+            <button class="btn btn-primary btnChangePassword">Change password</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary closeModal" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Deposit modal-->
+  <div class="modal fade" id="modal-deposit" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">Deposit</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="deposit">
+        <div class="modal-body">
+          <div class="mb-4">
+            <label for="amount" class="form-label">Transaction ID</label>
+            <input type="text" class="form-control" id="ID" name="transID" placeholder="">
+          </div>
+          <label for="withdraw-method" class="form-label">Deposit Using</label>
+          <select class="form-select mb-3" aria-label="Withdraw Method" name="sendUsing" id="method">
+            <option value="MTN">MTN Mobile Money</option>
+            <option value="Airtel">Airtel Money</option>
+            <option value="Bank-Transfer">Bank Transfer</option>
+            <option value="Cash">Cash</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="deposit-btn">Confirm</button>
+        </div>
+       </form>
+      </div>
+    </div>
+  </div>
+  <!--Deposit History Modal-->
+  <div class="modal fade" id="modal-deposit-history" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6>Deposit History</h6>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+            <caption class="caption-top">Deposit History</caption>
+            <thead>
+              <tr>
+                <th scope="col">S/N</th>
+                <th scope="col">Amount (UGX)</th>
+                <th scope="col">Date Deposited</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="deposits-history">
+              
+            </tbody>
+            </table> 
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Investment Summary Modal-->
+  <div class="modal fade" id="modal-investment-summary" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Investment / Earnings History</h5>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Summary of your earnings from your investments</p>
+          <div class="accordion" id="accordion-investment-summary">
+              
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary px-3" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Investment History Modal Club-->
+  <div class="modal fade" id="modal-investment-history-club" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Club Investments</h5>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+            <caption class="caption-top">Investment History </caption>
+            <thead>
+              <tr class="align-middle">
+                <th scope="col">S/N</th>
+                <th scope="col">Date</th>
+                <th scope="col">Business</th>
+                <th scope="col">Total Invested</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="club-investments-history">
+              
+            </tbody>
+            </table> 
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary px-3" data-bs-dismiss="modal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Investment Opportunities Modal-->
+  <div class="modal fade" id="modal-investment-opportunities" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5>Opportunities</h5>
+        </div>
+        <div class="modal-body">
+          <p class="lead">Available Investment Opportunities</p>
+          <div class="accordion" id="accordion-investment-opportunities">
+            
+
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary px-3" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--investment status modal-->
+  <div class="modal fade" id="modal-status" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-primary" id="staticBackdropLabel">Investment Status</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          
+        </div>
+        <div class="modal-body">
+          <div id="investment-status">Investment Successful !</div>
+        </div>
+      </div>
+    </div>
+  </div>   
+  <!--withdraw modal-->
+  <div class="modal fade" id="modal-withdraw" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-primary" id="staticBackdropLabel">Withdraw</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>        
+        <form id="withdraw">
+        <div class="modal-body">
+          <div class="mb-4">
+            <label for="amount" class="form-label">Amount</label>
+            <input type="number" class="form-control" name="withdrawAmount" id="withdraw-amount" placeholder="">
+          </div>
+          <label for="withdraw-method" class="form-label">Withdraw Options</label>
+          <select class="form-select mb-3" aria-label="Withdraw Method" name="withdrawUsing" id="withdraw-method">
+            <option value="MTN"> MTN Mobile Money</option>
+            <option value="Airtel"> Airtel Mobile Money</option>              
+            <option value="Cash">Cash</option>
+          </select>
+          <div id="airtel">
+            <p><span id="charge"></span></p>
+            <p id="withdraw-change"></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="withdraw-btn" data-bs-dismiss="modal">Confirm</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!--Earnings History Modal-->
+  <div class="modal fade" id="modal-earnings-history">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6>Earnings History</h6>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive table-form">
+            <table class="table table-striped">
+            <caption class="caption-top">History of your Earnings</caption>
+            <thead>
+              <tr>
+                <th scope="col">S/N</th>
+                <th scope="col">Amount (UGX)</th>
+                <th scope="col">Date Received</th>
+                <th scope="col">Source</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="returns-history">
+
+            </tbody>
+            </table> 
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Withdraw History Modal-->
+  <div class="modal fade" id="modal-withdraw-history">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6>Withdraw History</h6>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-striped">
+            <caption class="caption-top">Withdraw History</caption>
+            <thead>
+              <tr>
+                <th scope="col">S/N</th>
+                <th scope="col">Amount (UGX)</th>
+                <th scope="col">Date Withdrawn</th>
+              </tr>
+            </thead>
+            <tbody class="table-group-divider" id="withdrawal-history">
+
+            </tbody>
+            </table> 
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--NAVBAR-NAVIGATION-->
+  <nav class="navbar bg-light navbar-expand-md mb-3">
+    <div class="container-lg justify-content-start">
+      <button class="navbar-toggler me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+        <span class="bi bi-list"></span>
+      </button>
+      <a class="navbar-brand ms-md-5" href="#">
+        <img src="/images/logo.png" alt="" style="width:10.5rem" class="">
+      </a>
+      <!--mobile-view-->
+      <div class="d-flex d-md-none align-items-center ms-auto">
+        <img src="/profile-photo" class="rounded-circle me-2"  width="40 rem" height="40 rem"  alt="" > 
+      </div>
+      <% if (admin) { %>
+        <a href="/adminGr" class="ms-2 btn btn-sm btn-primary d-block d-md-none">Admin</a>
+    <% } %>
+      <!--Offcanvas Navigation Menu-->
+      <div class="offcanvas offcanvas-start flex-grow-1" tabindex="-1" id="offcanvasNavbar">
+        <div class="py-2 bg-light offcanvas-header mb-2">
+          <div class="dropdown">
+            <div class="dropdown-toggle" data-bs-toggle="dropdown">
+              <img src="/profile-photo" class="rounded-circle me-2"  width="35 rem" height="35 rem"  alt="" > <span class="name"><%= user.givenName %> </span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-start">
+              <a href="" class="dropdown-item text-decoration-none mb-4"data-bs-toggle="modal" data-bs-target="#modal-upload-photo">Upload profile photo</a>
+              <a href="" class="dropdown-item text-decoration-none mb-4"data-bs-toggle="modal" data-bs-target="#modal-change-password">Change my password</a>
+              <a href="/auth/logout" class=" text-decoration-none dropdown-item mb-0">Log Out</a>
+            </ul>
+          </div>
+        </div>
+        <div class="py-0 offcanvas-body justify-content-end flex-grow-1">
+          <ul class="navbar-nav justify-content-end align-items-md-center flex-grow-1 me-md-3">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Other Services</a>
+            </li>
+            <li class="nav-item d-none d-md-flex align-items-center ms-4">
+              <div class="dropdown">
+                <div class="dropdown-toggle" data-bs-toggle="dropdown">
+                  <img src="/profile-photo" class="rounded-circle me-2"  width="35 rem" height="35 rem"  alt="" > <span class="name"><%= user.givenName %> </span>
+                </div>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <a href="" class="dropdown-item text-decoration-none"data-bs-toggle="modal" data-bs-target="#modal-upload-photo">Upload profile photo</a>
+                  <a href="" class="dropdown-item text-decoration-none"data-bs-toggle="modal" data-bs-target="#modal-change-password">Change my password</a>
+                  <a href="/auth/logout" class="text-decoration-none dropdown-item">Log Out</a>
+                </ul>
+              </div>
+              
+            </li>
+          
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% if (admin) { %>
+      <a href="/adminGr" class="btn btn-primary me-2 d-none d-md-block">Admin</a>
+    <% } %>
+  </nav>
+
+  <!--MAIN CONTENT- CARDS-->
+  <div class="container-fluid">
+    <div class="row justify-content-center g-2">
+      <!--Your Standing-->
+      <div class="col-md-12 col-lg-10">
+        <div class="card">
+          <div class="card-header text-center">
+            <h5>Your Standing</h5>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="card-info d-flex flex-column align-items-center mt-auto">
+              <h6 class="card-subtitle lead">Total Worth</h6>
+              <p class="card-text" id="worth"></p>
+              <h6 class="card-subtitle lead">UnInvested Cash</h6>
+              <p class="card-text" id="uninvested"></p>
+            </div>
+            <div class="card-actions d-flex justify-content-around mt-auto">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-deposit">Deposit</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" id="depHis-btn" data-bs-target="#modal-deposit-history">Deposit History</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Investments-->
+      <div class="col-md-6 col-lg-5">
+        <div class="card">
+          <div class="card-header text-center">
+            <h5>Investments</h5>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="card-info d-flex flex-column align-items-center mt-auto">
+              <h6 class="card-subtitle lead">Amount Invested</h6>
+              <p class="card-text" id="invested"></p>
+              <h6 class="card-subtitle lead">Current Investments</h6>
+              <p class="card-text" id="current-investments"></p>
+            </div>
+            <div class="card-actions d-flex justify-content-between mt-auto">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-investment-summary">Investment Summary</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-investment-opportunities">Opportunities <span class="badge text-bg-warning" id="opportunities-number"></span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Earnings-->
+      <div class=" col-md-6 col-lg-5">
+        <div class="card">
+          <div class="card-header text-center">
+            <h5>Returns</h5>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="card-info d-flex flex-column align-items-center mt-auto">
+              <h6 class="card-subtitle lead">Available for Withdrawal</h6>
+              <p class="card-text" id="withdrawable"></p>
+            </div>
+            <div class="card-actions d-flex justify-content-around mt-auto">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-withdraw">Withdraw</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-earnings-history" id="retHis-btn">Returns History</button>
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-withdraw-history" id="witHis-btn">More</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--The Club-->
+      <div class="col-md-12 col-lg-10">
+        <div class="card">
+          <div class="card-header text-center">
+            <h5>The Club</h5>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <div class="card-info d-flex flex-column align-items-center mt-auto">
+              <h6 class="card-subtitle lead">Total Worth</h6>
+              <p class="card-text" id="club-worth"></p>
+              <h6 class="card-subtitle lead">Total Members</h6>
+              <p class="card-text" id="club-members"></p>
+            </div>
+            <div class="card-actions d-flex justify-content-around mt-auto">
+              <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-investment-history-club" id="clubHis-btn"> See list of Club Investments</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  <footer  class="mt-4 bg-light">
+    <div style="height:5rem" class="container d-flex align-items-center justify-content-center">
+      <small class="fw-bold h6">&copy GrowthSpring 2022</small>
+    </div>
+  </footer>
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+  <script src="/js/changePassword.js"></script>
+  <script src="/js/uploadPhoto.js"></script>
+
+  <script>
+var withdrawable = 0;
+var uninvested = 0;
+
+//disabling deposit buttons
+const depositField = document.getElementById("ID");
+            let buttonDep = document.getElementById('deposit-btn');
+            buttonDep.disabled = true;
+            depositField.addEventListener('change', function(){
+              if (depositField.value != "") {
+                buttonDep.disabled = false;                  
+              }else{
+                buttonDep.disabled = true;
+                 }
+ });
+
+
+//disabling withdraw buttons
+const withdrawField = document.getElementById("withdraw-amount");
+            let buttonWit = document.getElementById('withdraw-btn');
+            buttonWit.disabled = true;
+            withdrawField.addEventListener('change', function(){
+              if (withdrawField.value != "") {
+                buttonWit.disabled = false;                  
+              }else{
+                buttonWit.disabled = true;
+                 }
+ }); 
+
+  //check charges  and withdraw Amount  
+    var checkAmount = document.getElementById("withdraw-amount");
+    checkAmount.addEventListener('change', function(){
+                        chargesFunction();
+                        const value = withdrawable - document.getElementById('withdraw-amount').value;
+                        let buttonWith = document.getElementById('withdraw-btn');
+                        if(value < 0){
+                            const maxAmount = withdrawable;
+                            document.getElementById('withdraw-change').style.color = "red";
+                            document.getElementById('withdraw-change').innerHTML = "The maximum you can withdraw is  " + maxAmount;
+                            //disable withdraw button/keep it disabled 
+                            buttonWith.disabled = true;   
+                        }
+    });
+    
+    var checkCharges = document.getElementById("withdraw-method");
+        checkCharges.addEventListener('change', chargesFunction);
+        function chargesFunction(){  
+            if(checkCharges.value === "Airtel")  {
+            document.getElementById('airtel').style.display = "block";              
+            const getCharge = document.getElementById("withdraw");
+            const getChargeData = new FormData (getCharge);
+            const payload = new URLSearchParams (getChargeData);        
+            fetch('/chargesG', {
+                      method: 'post',
+                      body: payload
+                    }).then(res => res.json())
+                     .then(function(data) {
+                        document.getElementById('charge').innerHTML =  data.charge;
+                        const value = withdrawable - document.getElementById('withdraw-amount').value - data.charge;
+                        let buttonWithd = document.getElementById('withdraw-btn');
+                        if(value < 0){
+                            const maxAmount = withdrawable - data.charge;
+                            document.getElementById('withdraw-change').style.color = "red";
+                            document.getElementById('withdraw-change').innerHTML = "The maximum you can withdraw is  " + maxAmount;
+                            //disable withdraw button/keep it disabled
+                            buttonWithd.disabled = true;
+                        }
+                      });
+                 } else {
+                    document.getElementById('charge').innerHTML = "";
+                    document.getElementById('withdraw-change').innerHTML = ""; 
+                                  
+                 }
+        }    
+    
+       </script>
+       <script>
+         
+//deposit history
+document.getElementById('depHis-btn').addEventListener("click", depositHistory); 
+function depositHistory(){ 
+document.getElementById('deposits-history').innerHTML = "";    
+    fetch('/deposit-history', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                        const date = new Date(data.list[z].date).toDateString();
+                        document.getElementById('deposits-history').innerHTML += "<tr><th scope=\"row\">" + y + "</th><td>" + data.list[z].amount.toLocaleString("en-US") + "</td><td>" + date + "</td></tr>";                       
+                        z++;
+                        y++;
+                    }
+           });
+          } 
+
+//returns history
+document.getElementById('retHis-btn').addEventListener("click", returnsHistory); 
+function returnsHistory(){ 
+document.getElementById('returns-history').innerHTML = "";    
+    fetch('/returns-history', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                        const date = new Date(data.list[z].date).toDateString();
+                        document.getElementById('returns-history').innerHTML += "<tr><th scope=\"row\">" + y + "</th><td>" + data.list[z].amount.toLocaleString("en-US") + "</td><td>" + date + "</td><td>" + data.list[z].source + "</td></tr>";                       
+                        z++;
+                        y++;
+                    }
+           });
+          } 
+
+//withdrawals history
+document.getElementById('witHis-btn').addEventListener("click", withdrawalHistory); 
+function withdrawalHistory(){ 
+document.getElementById('withdrawal-history').innerHTML = "";    
+    fetch('/withdrawal-history', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                        const date = new Date(data.list[z].date).toDateString();
+                        document.getElementById('withdrawal-history').innerHTML += "<tr><th scope=\"row\">" + y + "</th><td>" + data.list[z].amount.toLocaleString("en-US") + "</td><td>" + date + "</td></tr>";                       
+                        z++;
+                        y++;
+                    }
+           });
+          } 
+          
+//club investments history
+document.getElementById('clubHis-btn').addEventListener("click", clubHistory); 
+function clubHistory(){ 
+document.getElementById('club-investments-history').innerHTML = "";    
+    fetch('/club-investments-history', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                        const date = new Date(data.list[z].date).toDateString();
+                        document.getElementById('club-investments-history').innerHTML += "<tr><th scope=\"row\">" + y + "</th><td>" + date + "</td><td>" + data.list[z].businessName + "</td><td>" + data.list[z].amountCollected.toLocaleString("en-US") + "</td><td>" + data.list[z].status + "</td></tr>";                       
+                        z++;
+                        y++;
+                    }
+           });
+          }
+          
+          
+//send deposit
+    const deposit = document.getElementById('deposit-btn');
+    const depositForm = document.getElementById('deposit');
+    deposit.addEventListener('click', function(){
+      
+            const depositFormData = new FormData (depositForm);
+            const payload = new URLSearchParams (depositFormData);
+            document.getElementById('ID').value = "";        
+            fetch('/depositG', {
+                      method: 'post',
+                      body: payload
+                    }).then(res => res.json())
+                     .then(data => {
+                      
+                     }
+                     );        
+        } )
+    
+//request withdrawal
+    const withdraw = document.getElementById('withdraw-btn');
+    withdraw.addEventListener('click', function(){
+    const withdraw_Amount = document.getElementById('withdraw-amount').value;
+    const method = document.getElementById('method').value;
+    var charges_Amount = parseInt(document.getElementById('charge').innerHTML); 
+    if (checkCharges.value != "Airtel Mobile Money"){
+        charges_Amount = 0;
+    }  
+     
+            const withdrawFormData = {
+                "Amount" : withdraw_Amount,
+                "Charge" : charges_Amount,
+                "withdrawUsing": method
+            };
+            const payload = new URLSearchParams (withdrawFormData);
+            document.getElementById('withdraw-amount').value = "";        
+            fetch('/withdrawG', {
+                      method: 'post',
+                      body: payload
+                    }).then(res => res.json())
+                     .then(data => {
+                        //if (data.result == "done"){ innerHTML = "your request has been received"}
+                        //send an approval message to indicate the system received the request
+                        
+                        
+                     });        
+        } )
+    
+//get investment value
+    var investmentValue = 0;
+    function getInvestmentValue(value){
+        const check = uninvested;
+        if (value<= check){
+        investmentValue = value;
+        } else{
+            document.getElementById('more-money').innerHTML = "Deposit More Money";
+        }
+    }
+//invest
+  function invest(className){
+    if (investmentValue > 0){            
+        const investData = {
+                "Amount" : investmentValue,
+                "businessName": className
+            };
+            const payload = new URLSearchParams (investData);        
+            fetch('/submit-investment', {
+                      method: 'post',
+                      body: payload
+                    }).then(res => res.json())
+                     .then({
+                        //if (data.result == "done"){ innerHTML = "your request has been received"}
+                        //send an approval message to indicate the system received the request
+                     }); 
+                }
+}          
+
+    //LOAD PAGE DATA
+    var opportunities = [];
+    var investments = [];
+     setInterval(loadpage, 1000);
+        function loadpage(){
+           /* opportunities = [];
+            document.getElementById('opportunities').innerHTML = ""; */       
+    //member data        
+             fetch('/userdataG', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        document.getElementById('worth').innerHTML = data.worth.toLocaleString("en-US");
+                        document.getElementById('withdrawable').innerHTML = data.with.toLocaleString("en-US");
+                        document.getElementById('uninvested').innerHTML = data.uninvested.toLocaleString("en-US");
+                        document.getElementById('invested').innerHTML = (data.worth - data.uninvested).toLocaleString("en-US");
+                        document.getElementById('current-investments').innerHTML = data.current + " Investments";
+
+                        withdrawable = data.with;
+                        uninvested = data.uninvested;
+
+                       });  
+    
+    //club data        
+    fetch('/clubdataG', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        document.getElementById('club-worth').innerHTML = data.worth.toLocaleString("en-US");
+                        document.getElementById('club-members').innerHTML = data.members;                        
+                       });
+                       
+    //opportunities list      
+    fetch('/opportunitiesListG', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                            const tID = data.list[z]._id;
+                            if(opportunities.includes(tID) == false ){
+                        document.getElementById('accordion-investment-opportunities').innerHTML += "<div class=\"accordion-item\"><h2 class=\"accordion-header\" id=\"accordion-investment-opportunities-header-"+y+"\"><button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#accordion-investment-opportunities-panel-"+y+"\" aria-expanded=\"false\" aria-controls=\"accordion-investment-opportunities-panel-"+y+"\">"+y+". "+ data.list[z].businessName+"</button></h2><div id=\"accordion-investment-opportunities-panel-"+y+"\" class=\"accordion-collapse collapse\" aria-labelledby=\"accordion-investment-opportunities-header-"+y+"\"><div class=\"accordion-body\"><p class=\"lead\">Description of Investment</p><p>"+ data.list[z].description +"</p><p class=\"lead\">Details of Investment</p><div class=\"d-flex justify-content-between mb-2\"><h6>Required (UGX)</h6><p>"+ data.list[z].requiredContribution.toLocaleString("en-US") +"</p></div><div class=\"d-flex justify-content-between mb-2\"><h6>Days Left</h6><p>"+ data.list[z].daysLeft +"</p></div><form class=\"d-flex flex-column\"><label class=\"form-label mb-3 lead\" for=\"my-investment-"+y+"\">Your Investment (UGX)</label><input type=\"number\" class=\"form-control mb-3\" onchange = \"getInvestmentValue(this.value, "+ z + ")\"><button data-bs-toggle = \"modal\" data-bs-target = \"#modal-status\" type= \"button\" id = \""+ data.list[z].businessName + "\" onclick = \"invest(this.id)\" class=\"btn btn-primary\">Invest</button></form></div></div></div>";
+                        opportunities.push(tID);
+                    }
+                    z++;
+                    y++;
+                }
+                document.getElementById('opportunities-number').innerHTML = z;
+           });
+    
+    //get investments summary list       
+           fetch('/investmentsListG', {
+                        method: 'get',
+                      }).then(res => res.json())
+                       .then(function(data) {
+                        var z = 0;
+                        var y = 1;
+                        for (let x in data.list){
+                            const tID = data.list[z]._id;
+                            const status = data.list[z].status;
+                            if(investments.includes(tID) == false && status !="preparation"){
+                        document.getElementById('accordion-investment-summary').innerHTML += "<div class=\"accordion-item\"><h2 class=\"accordion-header\" id=\"accordion-investment-summary-header-"+y+"\"><button class=\"accordion-button collapsed\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#accordion-investment-summary-panel-"+y+"\" aria-expanded=\"false\" aria-controls=\"accordion-investment-summary-panel-"+y+"\">"+y+". "+ data.list[z].businessName+"</button></h2><div id=\"accordion-investment-summary-panel-"+y+"\" class=\"accordion-collapse collapse\" aria-labelledby=\"accordion-investment-summary-header-"+y+"\"><div class=\"accordion-body\"><div class=\"d-flex justify-content-between mb-2\"><h6>Amount Invested (UGX)</h6><p>" + data.list[z].amount.toLocaleString("en-US") + "</p></div><div class=\"d-flex justify-content-between mb-2\"><h6>Principle Returned (UGX)</h6><p>" + (data.list[z].amount - data.list[z].principleLeft).toLocaleString("en-US") + "</p></div><div class=\"d-flex justify-content-between mb-2\"><h6>Profits (UGX)</h6><p>" + data.list[z].profit.toLocaleString("en-US") + "</p></div><div class=\"d-flex justify-content-between mb-2\"><h6>Status</h6><p>" + data.list[z].status + "</p></div></div></div></div>";                        
+                        investments.push(tID);
+                        y++;
+                    }
+                    z++;
+                }
+           });       
+        }                     
+</script>
+</body>
+</html>
+
+
+  
+      
+    
+      
+
+        
+        
