@@ -1,4 +1,4 @@
-const app = require('express')();
+const app = require('../app.js');
 const { v4 } = require('uuid');
 
 app.get('/api', (req, res) => {
