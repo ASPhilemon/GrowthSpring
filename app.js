@@ -19,7 +19,7 @@ const { response } = require('express');
 const app = express();
 
 //connect to mongoDB
-const dbURI = 'mongodb+srv://blaise1:blaise119976@cluster0.nmt34.mongodb.net/GrowthSpring?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://PhilemonAriko:CIVIL3@@@MUkk@cluster0.z9m53.mongodb.net/?retryWrites=true&w=majority';
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then((result) => app.listen(800));
 
